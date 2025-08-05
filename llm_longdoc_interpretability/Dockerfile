@@ -1,6 +1,6 @@
 # A dockerfile that clones the research code's github repo, installs all
 # required dependencies and runs a test script.
-FROM ubuntu
+FROM ubuntu:24.10
 
 # Install system packages.
 RUN apt-get update && apt-get -yq install git curl g++ gnupg2
