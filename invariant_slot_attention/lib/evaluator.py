@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -298,7 +298,8 @@ def evaluate(
 
   for batch in eval_ds:
     rng, eval_rng = jax.random.split(rng)
-    eval_rng = jax.random.fold_in(eval_rng, jax.host_id())  # Bind to host.
+    eval_rng = jax.random.fold_in(  # Bind to host.
+        eval_rng, jax.process_index())
     eval_rngs = jax.random.split(eval_rng, jax.local_device_count())
     batch = jax.tree.map(np.asarray, batch)
     preds = eval_step(

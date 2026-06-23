@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -192,7 +192,7 @@ class SegmentedRankingDataset:
       A new `SegmentedRankingDataset` with a random subset of `n` queries.
     """
     query_indices = self.rng.choice(self.num_queries, n, replace=False)
-    mask = np.in1d(self.query_segments, query_indices)
+    mask = np.isin(self.query_segments, query_indices).ravel()
     _, new_query_segments = np.unique(
         self.query_segments[mask], return_inverse=True
     )
@@ -219,7 +219,7 @@ class SegmentedRankingDataset:
       randomly selected, and the second with the remaining queries.
     """
     query_indices_left = self.rng.choice(self.num_queries, n, replace=False)
-    mask_left = np.in1d(self.query_segments, query_indices_left)
+    mask_left = np.isin(self.query_segments, query_indices_left).ravel()
     mask_right = np.logical_not(mask_left)
     _, new_query_segments_left = np.unique(
         self.query_segments[mask_left], return_inverse=True

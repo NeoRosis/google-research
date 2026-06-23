@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -450,7 +450,7 @@ def load_config(save_config = True):
       flags.FLAGS.gin_configs, flags.FLAGS.gin_bindings, skip_unknown=True
   )
   config = Config()
-  if save_config and jax.host_id() == 0:
+  if save_config and jax.process_index() == 0:
     utils.makedirs(config.checkpoint_dir)
     with utils.open_file(config.checkpoint_dir + '/config.gin', 'w') as f:
       f.write(gin.config_str())

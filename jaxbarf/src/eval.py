@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -164,7 +164,7 @@ def main(unused_argv):
           FLAGS.dataset == "llff",
           chunk=FLAGS.chunk,
           step=step/FLAGS.max_steps)
-      if jax.host_id() != 0:  # Only record via host 0.
+      if jax.process_index() != 0:  # Only record via host 0.
         continue
 
       psnr = utils.compute_psnr(((pred_color - batch["pixels"])**2).mean())

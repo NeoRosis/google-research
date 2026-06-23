@@ -1,4 +1,4 @@
-// Copyright 2025 The Google Research Authors.
+// Copyright 2026 The Google Research Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,10 +32,10 @@
 #include <thread>  // NOLINT(build/c++11)
 
 #include "glog/logging.h"
-#include "instruction.pb.h"
-#include "google/protobuf/text_format.h"
 #include "absl/flags/flag.h"
 #include "Eigen/Core"
+#include "instruction.pb.h"
+#include "third_party/protobuf/text_format.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Conventions.

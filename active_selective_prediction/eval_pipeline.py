@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -135,7 +135,7 @@ def print_metrics(name, metrics, logger):
     )
   cov_acc_95 = metrics['coverage_set'][metrics['accuracy_set'] >= 0.95][-1]
   acc_cov_95 = metrics['accuracy_set'][metrics['coverage_set'] >= 0.95][0]
-  auacc = np.trapz(y=metrics['accuracy_set'], x=metrics['coverage_set'])
+  auacc = np.trapezoid(y=metrics['accuracy_set'], x=metrics['coverage_set'])
   logger.info('Coverage at Accuracy >= 95%%: %.2f%%', cov_acc_95*100)
   logger.info('Accuracy at Coverage >= 95%%: %.2f%%', acc_cov_95*100)
   logger.info('AUACC %.4f\n', auacc)

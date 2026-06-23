@@ -1,6 +1,5 @@
 # Airdialogue
 
-
 ## Install
 
 1. install parlai
@@ -25,7 +24,7 @@ replace `~/airdialogue_model_transformer` by your path
 cd ParlAI
 mkdir data
 cd data
-gsutil cp gs://airdialogue_share/airdialogue_data.tar.gz ./airdialogue.tar.gz
+gcloud storage cp gs://airdialogue_share/airdialogue_data.tar.gz ./airdialogue.tar.gz
 cd ../..
 ```
 
@@ -33,8 +32,6 @@ cd ../..
 ```
 parlai display_data -t airdialogue:agent:300
 ```
-
-
 
 ## Intro
 
@@ -55,7 +52,7 @@ CUDA_VISIBLE_DEVICS=0 python train_agent.py
 ```
 mkdir outputs
 cd outputs
-gsutil cp gs://airdialogue_share/air_pretrain_model.tar.gz ./
+gcloud storage cp gs://airdialogue_share/air_pretrain_model.tar.gz ./
 tar -xvzf air_pretrain_model.tar.gz
 ```
 
@@ -92,7 +89,8 @@ python selfplay.py --selfchat-max-turns 10 -t airdialogue:both:300 -mf human -pm
 
 - `--start-cid` can start from a give conversation id
 
-You can enter you own words, or select predefined response by '-x', 'x=0,1,2,3' represents the response id. 
+You can enter you own words, or select predefined response by '-x', 'x=0,1,2,3'
+represents the response id.
 
 ## Generate OPE Data
 

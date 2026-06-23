@@ -1,4 +1,4 @@
-// Copyright 2025 The Google Research Authors.
+// Copyright 2026 The Google Research Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -36,9 +36,9 @@ absl::Status RunSubmanifoldSparseConvolution(
   const int in_channels = opts.in_channels();
   const int out_channels = opts.out_channels();
 
-  const int* coordinates_ptr = opts.coordinates.tensor<int32, 3>().data();
+  const int* coordinates_ptr = opts.coordinates.tensor<int32_t, 3>().data();
   const float* filter_ptr = opts.filter.tensor<float, dims + 2>().data();
-  auto num_valid_coordinates_t = opts.num_valid_coordinates.vec<int32>();
+  auto num_valid_coordinates_t = opts.num_valid_coordinates.vec<int32_t>();
   auto input_features_t = opts.input_features.tensor<float, 3>();
   auto output_features_t = opts.output_features->tensor<float, 3>();
   output_features_t.setConstant(0.0f);
@@ -93,7 +93,8 @@ absl::Status LaunchSubmanifoldSparseConvolution<Eigen::ThreadPoolDevice>(
   const int dims = opts.coordinates.dim_size(2);
   if (dims == 2) return RunSubmanifoldSparseConvolution<2>(opts);
   if (dims == 3) return RunSubmanifoldSparseConvolution<3>(opts);
-  return errors::InvalidArgument("Only 2D and 3D convolutions are supported.");
+  return absl::InvalidArgumentError(
+      "Only 2D and 3D convolutions are supported.");
 }
 
 }  // namespace tf3d

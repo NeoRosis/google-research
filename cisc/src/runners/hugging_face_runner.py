@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -178,6 +178,9 @@ class Runner(runner_lib.Runner):
       use_cache = True,
   ):
     """Generates a single response for each prompt."""
+    # When generating only one token, no reason to use cache.
+    use_cache = use_cache and max_new_tokens > 1
+
     if return_scores is None:
       return_scores = self._return_scores
 

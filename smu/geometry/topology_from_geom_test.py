@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -45,10 +45,10 @@
 
 from absl.testing import absltest
 
+from google.protobuf import text_format
 import numpy as np
 import pandas as pd
 
-from google.protobuf import text_format
 from smu import dataset_pb2
 from smu.geometry import bond_length_distribution
 from smu.geometry import topology_from_geom

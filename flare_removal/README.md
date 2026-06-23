@@ -16,7 +16,7 @@ This repository contains code that accompanies the following paper:
 
 ## Announcements
 
--   We have made a small fix to the VGG loss in an attempt to fix the issue 
+-   We have made a small fix to the VGG loss in an attempt to fix the issue
     below. We thank the reader for reporting this issue.
 
 -   ~~**1/30/2022:** It has been brought to our attention that there might be an
@@ -34,9 +34,7 @@ This repository contains code that accompanies the following paper:
 
 ### Flare-only images
 
-A total of 5,001 RGB flare images are
-[released](https://research.google/tools/datasets/lens-flare/) via Google
-Research's public dataset repository under the
+A total of 5,001 RGB flare images are released under the
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) license. Among them:
 
 -   2,001 are from lab captures (1,001 captures + interpolation between frames).
@@ -48,13 +46,13 @@ Research's public dataset repository under the
 To obtain this data:
 
 1.  Install [Google Cloud SDK](https://cloud.google.com/sdk/docs/quickstart).
-    This should automatically install the `gsutil` tool which is required to
-    access the Google Cloud Storage bucket.
+    This should automatically install the `gcloud storage` tool which is
+    required to access the Google Cloud Storage bucket.
 
 2.  Run the following command:
 
     ```shell
-    $ gsutil cp -r gs://gresearch/lens-flare /your/local/path
+    $ gcloud storage cp --recursive gs://gresearch/lens-flare /your/local/path
     ```
 
 ### Flare-free (scene) images

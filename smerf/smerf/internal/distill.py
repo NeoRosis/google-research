@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -153,7 +153,7 @@ def load_config(save_config = True):
 
 def save_config(logdir):
   """Saves Gin config to logdir."""
-  if jax.host_id() == 0:
+  if jax.process_index() == 0:
     logdir.mkdir(parents=True, exist_ok=True)
     (logdir / 'config.gin').write_text(gin.config_str())
 

@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1904,7 +1904,7 @@ def distributed_shampoo(
 
 
       def compute_updated_statistics():
-        return preconditioner.updated_statistics_from_grad(
+        return preconditioner.updated_statistics_from_grad(  # pytype: disable=wrong-arg-types
             state.statistics,
             grad,
             w1=w1,
@@ -1942,7 +1942,7 @@ def distributed_shampoo(
 
 
   def _matrix_inverse_pth_root_vmap(xs, ps, padding_starts, prev):
-    return jax.vmap(mi_pth_root)(
+    return jax.vmap(mi_pth_root)(  # pytype: disable=wrong-arg-types
         xs, ps, padding_start=padding_starts, prev=prev)
 
   def _quantized_matrix_inverse_pth_root_vmap(qxs,

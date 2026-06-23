@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -393,8 +393,8 @@ class Dataset(threading.Thread):
     else:
       raise ValueError(
           f'`split` should be \'train\' or \'test\', but is \'{split}\'.')
-    self.batch_size = config.batch_size // jax.host_count()
-    self.batch_size_random = config.batch_size_random // jax.host_count()
+    self.batch_size = config.batch_size // jax.process_count()
+    self.batch_size_random = config.batch_size_random // jax.process_count()
     print('Using following batch size', self.batch_size)
     self.patch_size = config.patch_size
     self.batching = config.batching

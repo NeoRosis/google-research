@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,9 +16,9 @@
 """Helpers to define models for xmanager runs.
 """
 
+from google.protobuf import text_format
 import tensorflow.compat.v1 as tf
 
-from google.protobuf import text_format
 from fm4tlp.models import model_config_pb2
 
 

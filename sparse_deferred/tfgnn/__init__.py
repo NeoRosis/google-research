@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,3 +20,5 @@ from sparse_deferred.tfgnn import io
 graph_struct_from_tf_example = io.graph_struct_from_tf_example
 graph_struct_from_graph_tensor = io.graph_struct_from_graph_tensor
 graph_struct_to_tf_example = io.graph_struct_to_tf_example
+graph_struct_from_tf_example_dict = io.graph_struct_from_tf_example_dict
+

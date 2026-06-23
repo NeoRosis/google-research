@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -97,6 +97,9 @@ class NamedLists(dict, Generic[T]):
         self._idx = -1
         return self.__next__()
       return self._level[self._idx]
+
+    def __iter__(self):
+      return self
 
   def __iter__(self):
     return NamedLists._Iterator(self)

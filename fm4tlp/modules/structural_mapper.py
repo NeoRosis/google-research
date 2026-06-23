@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,9 +22,9 @@ class StructMapper(torch.nn.Module):
   def __init__(self, structural_feature_dim, hidden_dim, memory_emb_dim):
     super().__init__()
 
-    self.layer1 = torch.torch.nn.Linear(structural_feature_dim, hidden_dim)
-    self.sigmoid = torch.torch.nn.Sigmoid()
-    self.layer2 = torch.torch.nn.Linear(hidden_dim, memory_emb_dim)
+    self.layer1 = torch.nn.Linear(structural_feature_dim, hidden_dim)
+    self.sigmoid = torch.nn.Sigmoid()
+    self.layer2 = torch.nn.Linear(hidden_dim, memory_emb_dim)
 
   def forward(self, x):
     out = self.layer1(x)

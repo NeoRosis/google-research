@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -53,8 +53,8 @@ class Camera:
     vertical_unit_vector = horizontal_unit_vector.cross(
         self.view_direction).unit()
 
-    self.horizontal = viewport_width * horizontal_unit_vector
-    self.vertical = viewport_height * vertical_unit_vector
+    self.horizontal = viewport_width * horizontal_unit_vector  # pytype: disable=unsupported-operands  # jax-operator-types
+    self.vertical = viewport_height * vertical_unit_vector  # pytype: disable=unsupported-operands  # jax-operator-types
     self.lower_left_corner = (
         self.origin - self.horizontal / 2 - self.vertical / 2 +
         (self.view_direction.unit()))

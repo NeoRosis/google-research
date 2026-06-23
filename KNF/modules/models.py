@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -106,7 +106,7 @@ class Koopman(nn.Module):
     num_poly: the highest order of polynomial functions
     num_exp: number of exponential functions
     num_heads: Number of the head the transformer encoder
-    transformer_dim: hidden dimension of tranformer encoder
+    transformer_dim: hidden dimension of transformer encoder
     transformer_num_layers: number of layers in the transformer encoder
     dropout_rate: dropout rate of MLP modules
   """

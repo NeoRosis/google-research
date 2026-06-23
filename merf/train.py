@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ def main(unused_argv):
   if not utils.isdir(temp_dir):
     utils.makedirs(temp_dir)
 
-  if jax.host_id() == 0:
+  if jax.process_index() == 0:
     with utils.open_file(path.join(log_dir, 'config.gin'), 'w') as f:
       f.write(gin.config_str())
 

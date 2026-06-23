@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -23,6 +23,22 @@ class TfEngineTest(tf.test.TestCase):
   def test_engine_constructs_ok(self):
     """Tests verifies that _TFEngine implements all abstract methods."""
     tf_engine._TFEngine()
+
+  def test_fill_padding(self):
+    output = tf_engine.engine.fill_padding(
+        tf.constant([[1, 2], [3, 4]]),
+        tf.constant([[0, 0], [0, 0], [0, 0], [0, 0]]),
+    )
+    expected_output = tf.constant([[1, 2], [3, 4], [0, 0], [0, 0]])
+    self.assertAllEqual(output, expected_output)
+
+  def test_fill_padding_empty(self):
+    output = tf_engine.engine.fill_padding(
+        tf.constant([[], []]),
+        tf.constant([[0, 0], [0, 0], [0, 0], [0, 0]]),
+    )
+    expected_output = tf.constant([[0, 0], [0, 0], [0, 0], [0, 0]])
+    self.assertAllEqual(output, expected_output)
 
 
 if __name__ == '__main__':

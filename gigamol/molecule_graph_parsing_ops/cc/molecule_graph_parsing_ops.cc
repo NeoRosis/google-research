@@ -1,4 +1,4 @@
-// Copyright 2025 The Google Research Authors.
+// Copyright 2026 The Google Research Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,16 +33,16 @@ class MoleculeGraphParserOp : public OpKernel {
   void Compute(OpKernelContext* context) override {
     const Tensor& example_ids_in_tensor = context->input(0);
     OP_REQUIRES(context, example_ids_in_tensor.dims() == 1,
-                errors::InvalidArgument("example_ids_in must be a vector"));
-    const int32 batch_size_example_ids_in = example_ids_in_tensor.dim_size(0);
+                absl::InvalidArgumentError("example_ids_in must be a vector"));
+    const int32_t batch_size_example_ids_in = example_ids_in_tensor.dim_size(0);
 
     const Tensor& in_molecule_tensor = context->input(1);
     OP_REQUIRES(context, in_molecule_tensor.dims() == 1,
-                errors::InvalidArgument("molecule graphs must be a vector"));
-    const int32 batch_size = in_molecule_tensor.dim_size(0);
+                absl::InvalidArgumentError("molecule graphs must be a vector"));
+    const int32_t batch_size = in_molecule_tensor.dim_size(0);
 
     OP_REQUIRES(context, batch_size_example_ids_in == batch_size,
-                errors::InvalidArgument("Input tensor size mismatch"));
+                absl::InvalidArgumentError("Input tensor size mismatch"));
 
     // Copies example_ids_in directly to example_ids
     context->set_output(0, example_ids_in_tensor);
@@ -90,7 +90,7 @@ class MoleculeGraphParserOp : public OpKernel {
     pair_mask.setZero();
 
     // Gets atom and pair features for each molecule in a batch
-    int32 max_pair_distance = featurizer_.GetMaxPairDistance();
+    int32_t max_pair_distance = featurizer_.GetMaxPairDistance();
 
     auto in_molecule = in_molecule_tensor.flat<tstring>();
     auto example_ids = example_ids_in_tensor.flat<tstring>();
@@ -99,20 +99,22 @@ class MoleculeGraphParserOp : public OpKernel {
 
       // Sets mask to all 1s for empty string examples if they're allowed.
       // If not allowed, they'll trigger the "has no atoms" exception below.
-      OP_REQUIRES(context, mol.ParseFromString(in_molecule(batch_idx)),
-                  errors::InvalidArgument("Failed to parse MoleculeGraph for ",
-                                          example_ids(batch_idx)));
+      OP_REQUIRES(
+          context, mol.ParseFromString(in_molecule(batch_idx)),
+          absl::InvalidArgumentError(absl::StrCat(
+              "Failed to parse MoleculeGraph for ", example_ids(batch_idx))));
 
       OP_REQUIRES(context, mol.atoms_size() > 0,
-                  errors::InvalidArgument("Molecule ", example_ids(batch_idx),
-                                          " has no atoms."));
+                  absl::InvalidArgumentError(absl::StrCat(
+                      "Molecule ", example_ids(batch_idx), " has no atoms.")));
       OP_REQUIRES(
-          context, featurizer_.GetAllowOverflow() ||
-                       mol.atoms_size() <= featurizer_.GetMaxAtoms(),
-          errors::InvalidArgument("Molecule ", example_ids(batch_idx), " has ",
-                                  mol.atoms_size(), " atoms, which is ",
-                                  "more than the max allowed (",
-                                  featurizer_.GetMaxAtoms(), ")"));
+          context,
+          featurizer_.GetAllowOverflow() ||
+              mol.atoms_size() <= featurizer_.GetMaxAtoms(),
+          absl::InvalidArgumentError(absl::StrCat(
+              "Molecule ", example_ids(batch_idx), " has ", mol.atoms_size(),
+              " atoms, which is ", "more than the max allowed (",
+              featurizer_.GetMaxAtoms(), ")")));
       if (mol.atoms_size() > featurizer_.GetMaxAtoms()) {
         LOG(WARNING) << "Molecule " << example_ids(batch_idx) << " has "
                      << mol.atoms_size() << " atoms, "

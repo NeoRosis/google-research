@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -429,7 +429,7 @@ class ImageDataset(object):
     builder = self.get_builder(name)
     # Each host is responsible for a fixed subset of data
     base_split_name, host_start, host_end = dataset_utils.get_data_range(
-        builder, split, jax.host_id(), jax.host_count())
+        builder, split, jax.process_index(), jax.process_count())
     data_range = tfds.core.ReadInstruction(
         base_split_name, unit='abs', from_=host_start, to=host_end)
 
@@ -494,9 +494,9 @@ class ImageDataset(object):
         'input_dtype':
             self.dtype.jax_dtype,
         'num_train_examples':
-            self.splits.train.num_examples * jax.host_count(),
+            self.splits.train.num_examples * jax.process_count(),
         'num_eval_examples':
-            self.splits.validation.num_examples * jax.host_count(),
+            self.splits.validation.num_examples * jax.process_count(),
     }
 
 
@@ -728,9 +728,10 @@ class MutliEnvironmentImageDataset(ImageDataset):
         # num_train_examples_per_env and num_eval_examples_per_env should be
         # used.
         'num_train_examples':
-            self.splits.train[str(self.env2id(
-                self.train_environments[0]))].num_examples * jax.host_count(),
+            self.splits.train[str(
+                self.env2id(self.train_environments[0])
+            )].num_examples * jax.process_count(),
         'num_eval_examples':
             self.splits.validation[str(self.env2id(
-                self.eval_environments[0]))].num_examples * jax.host_count(),
+                self.eval_environments[0]))].num_examples * jax.process_count(),
     }

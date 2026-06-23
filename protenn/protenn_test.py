@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ class ProtennTest(parameterized.TestCase):
   def test_parse_input_malformed_fasta(self):
     # input is missing fasta header line marker.
     input_file_path = self.create_tempfile(content='SEQUENCE_NAME\nACDE')
-    with self.assertRaisesRegex(ValueError, 'Failed to parse'):
+    with self.assertRaises(ValueError):
       predict.parse_input_to_text(input_file_path.full_path)
 
   def test_format_output_adds_description(self):

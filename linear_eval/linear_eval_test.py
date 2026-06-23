@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -48,8 +48,7 @@ class LinearEvalTest(absltest.TestCase):
          iris.data[:, :2].astype(onp.float32), iris.target, test_size=0.25,
          random_state=0xdeadbeef)
 
-    sklearn_logreg = linear_model.LogisticRegression(
-        C=1e5, solver='lbfgs', multi_class='multinomial')
+    sklearn_logreg = linear_model.LogisticRegression(C=1e5, solver='lbfgs')
     sklearn_logreg.fit(train_embeddings, train_labels)
     sklearn_y_pred = sklearn_logreg.predict(test_embeddings)
 

@@ -1,4 +1,4 @@
-// Copyright 2025 The Google Research Authors.
+// Copyright 2026 The Google Research Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ class FusedSoftmaxOp : public tensorflow::OpKernel {
 
     // Validate the input shapes.
     OP_REQUIRES(context, TensorShapeUtils::IsMatrix(input.shape()),
-                InvalidArgument("Expected 2-dimension input."));
+                absl::InvalidArgumentError("Expected 2-dimension input."));
 
     // Allocate the output tensor.
     Tensor* output = nullptr;

@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ class TrainState:
 
 def is_chief():
   """Is this the chief host?"""
-  return jax.host_id() == 0
+  return jax.process_index() == 0
 
 
 def maybe_save_checkpoint(step,

@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,19 @@
 # limitations under the License.
 
 """Different datasets implementation plus a general port for all the datasets."""
+import abc
+import concurrent.futures
 import json
 import os
 from os import path
 import queue
 import threading
+
 import cv2
 import jax
 import numpy as np
 from PIL import Image
+
 from jaxnerf.nerf import utils
 
 
@@ -53,15 +57,24 @@ def convert_to_ndc(origins, directions, focal, w, h, near=1.):
   return origins, directions
 
 
-class Dataset(threading.Thread):
+class Dataset(threading.Thread, abc.ABC):
   """Dataset Base Class."""
 
   def __init__(self, split, args):
-    super(Dataset, self).__init__()
+    super().__init__(daemon=True)
     self.queue = queue.Queue(3)  # Set prefetch buffer to 3 batches.
-    self.daemon = True
     self.use_pixel_centers = args.use_pixel_centers
     self.split = split
+
+    # Subclasses should initialize the following attributes.
+    self.n_examples = 0
+    self.resolution = 0  # The total number of pixels in a single image.
+    self.h = 0  # The height of the image.
+    self.w = 0  # The width of the image.
+    self.focal = 0  # The focal length of the camera.
+    self.camtoworlds: np.ndarray | None = None
+    self.render_rays: utils.Rays | None = None
+
     if split == "train":
       self._train_init(args)
     elif split == "test":
@@ -70,7 +83,7 @@ class Dataset(threading.Thread):
       raise ValueError(
           "the split argument should be either \"train\" or \"test\", set"
           "to {} here.".format(split))
-    self.batch_size = args.batch_size // jax.host_count()
+    self.batch_size = args.batch_size // jax.process_count()
     self.batching = args.batching
     self.render_path = args.render_path
     self.start()
@@ -113,6 +126,11 @@ class Dataset(threading.Thread):
   @property
   def size(self):
     return self.n_examples
+
+  @abc.abstractmethod
+  def _load_renderings(self, args):
+    """Load renderings from disk."""
+    raise NotImplementedError
 
   def _train_init(self, args):
     """Initialize training."""
@@ -201,23 +219,28 @@ class Blender(Dataset):
         path.join(args.data_dir, "transforms_{}.json".format(self.split)),
         "r") as fp:
       meta = json.load(fp)
-    images = []
     cams = []
-    for i in range(len(meta["frames"])):
-      frame = meta["frames"][i]
+    imgfiles = []
+    for frame in meta["frames"]:
       fname = os.path.join(args.data_dir, frame["file_path"] + ".png")
+      imgfiles.append(fname)
+      cams.append(np.array(frame["transform_matrix"], dtype=np.float32))
+
+    def read_fn(fname):
       with utils.open_file(fname, "rb") as imgin:
-        image = np.array(Image.open(imgin), dtype=np.float32) / 255.
+        image = np.array(Image.open(imgin), dtype=np.float32) / 255.0
         if args.factor == 2:
           [halfres_h, halfres_w] = [hw // 2 for hw in image.shape[:2]]
           image = cv2.resize(
               image, (halfres_w, halfres_h), interpolation=cv2.INTER_AREA)
         elif args.factor > 0:
-          raise ValueError("Blender dataset only supports factor=0 or 2, {} "
-                           "set.".format(args.factor))
-      cams.append(np.array(frame["transform_matrix"], dtype=np.float32))
-      images.append(image)
-    self.images = np.stack(images, axis=0)
+          raise ValueError(f"Blender dataset only supports factor=0 or 2, "
+                           f"{args.factor} set.")
+      return image
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+      images = executor.map(read_fn, imgfiles)
+    self.images = np.stack(list(images), axis=0)
     if args.white_bkgd:
       self.images = (
           self.images[Ellipsis, :3] * self.images[Ellipsis, -1:] +
@@ -252,12 +275,13 @@ class LLFF(Dataset):
         for f in sorted(utils.listdir(imgdir))
         if f.endswith("JPG") or f.endswith("jpg") or f.endswith("png")
     ]
-    images = []
-    for imgfile in imgfiles:
-      with utils.open_file(imgfile, "rb") as imgin:
-        image = np.array(Image.open(imgin), dtype=np.float32) / 255.
-        images.append(image)
-    images = np.stack(images, axis=-1)
+    def read_fn(fname):
+      with utils.open_file(fname, "rb") as imgin:
+        return np.array(Image.open(imgin), dtype=np.float32) / 255.0
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+      images = executor.map(read_fn, imgfiles)
+    images = np.stack(list(images), axis=-1)
 
     # Load poses and bds.
     with utils.open_file(path.join(args.data_dir, "poses_bounds.npy"),
@@ -320,6 +344,10 @@ class LLFF(Dataset):
 
   def _generate_rays(self):
     """Generate normalized device coordinate rays for llff."""
+    # This is just to disable the warning about unininitialized variables when
+    # picking out the first n_render_poses from the camtoworlds. Since we know
+    # that self.split is test" in the if-statement below, this is safe.
+    n_render_poses = 0
     if self.split == "test":
       n_render_poses = self.render_poses.shape[0]
       self.camtoworlds = np.concatenate([self.render_poses, self.camtoworlds],

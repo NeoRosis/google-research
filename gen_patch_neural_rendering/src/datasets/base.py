@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ class BaseDataset(threading.Thread):
       raise ValueError(
           "the split argument should be either \"train\" or \"test\", set"
           "to {} here.".format(split))
-    self.batch_size = args.dataset.batch_size // jax.host_count()
+    self.batch_size = args.dataset.batch_size // jax.process_count()
     self.batching = args.dataset.batching
     self.render_path = args.dataset.render_path
 

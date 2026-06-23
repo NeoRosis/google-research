@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -243,7 +243,7 @@ def train_step(model, threshold_var, loss_op, constraint_op, optimizer,
     else:
       with tf.GradientTape(persistent=True) as tape2:
         tape2.watch(threshold_var)
-        loss_per_label = loss_op(threshold_var, predictions,
+        loss_per_label = loss_op(threshold_var, predictions,  # pytype: disable=duplicate-keyword-argument
                                  labels)  # classes x bins
         loss = tf.reduce_mean(loss_per_label)
         constraint_per_label = constraint_op(threshold_var, predictions,

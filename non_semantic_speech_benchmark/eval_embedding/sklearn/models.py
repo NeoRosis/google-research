@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,13 +28,11 @@ RandomForestClassifier = ensemble.RandomForestClassifier
 def get_sklearn_models():
   return {
       'LogisticRegression':
-          lambda: LogisticRegression(
-              C=1e5, solver='lbfgs', multi_class='multinomial'),
+          lambda: LogisticRegression(C=1e5, solver='lbfgs'),
       'LogisticRegression_balanced':
           lambda: LogisticRegression(
               C=1e5,
               solver='lbfgs',
-              multi_class='multinomial',
               class_weight='balanced'),
       'LDA_LSQR_AUTO':
           lambda: LinearDiscriminantAnalysis(solver='lsqr', shrinkage='auto'),

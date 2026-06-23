@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -93,11 +93,12 @@ def _call_openai(
   Returns:
     Text completion
   """
-  openai.api_key = random.choice(_OPENAI_CREDENTIALS.value)
+  api_key = random.choice(_OPENAI_CREDENTIALS.value)
+  client = openai.OpenAI(api_key=api_key)
 
   try:
-    reply = openai.Completion.create(
-        engine=engine,
+    reply = client.completions.create(
+        model=engine,
         prompt=prompt,
         temperature=temperature,
         max_tokens=max_decode_steps,
@@ -106,9 +107,9 @@ def _call_openai(
         presence_penalty=presence_penalty,
         n=samples,
         stop=stop)
-    return [choice['text'] for choice in reply['choices']] if reply else []
+    return [choice.text for choice in reply.choices] if reply else []
 
-  except openai.error.RateLimitError as e:
+  except openai.RateLimitError as e:
     print('Sleeping 60 secs.')
     time.sleep(60)
     raise ValueError('RateLimitError') from e

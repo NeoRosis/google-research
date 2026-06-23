@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -44,8 +44,8 @@ def offset_labeled_token_span(
 
 
 def predict_single(
-    model,
-    features):
+    model, features
+):
   """Predicts labeled token spans for the sample using the given model.
 
   Args:

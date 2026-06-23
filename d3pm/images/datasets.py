@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -101,8 +101,8 @@ class Dataset:
       repeat: bool: enables repeating the dataset
       shuffle: bool: enables shuffling
       augment: bool: data augmentation
-      shard_id: int: the current shard (jax.host_id())
-      num_shards: int: total number of shards (jax.host_count())
+      shard_id: int: the current shard (jax.process_index())
+      num_shards: int: total number of shards (jax.process_count())
 
     Returns:
       tf.data.Dataset

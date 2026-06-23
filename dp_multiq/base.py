@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ def quantiles(data, qs):
     data: A dataset sorted in increasing order.
     qs: Increasing array of quantiles in [0,1].
   """
-  return np.quantile(data, qs, interpolation='lower')
+  return np.quantile(data, qs, method='lower')
 
 
 def misclassified_points_error(sorted_data, true_quantiles, est_quantiles):

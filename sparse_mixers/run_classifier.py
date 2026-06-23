@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -610,7 +610,7 @@ def train_and_evaluate(config, workdir,
 
       eval_stats = []
       for _, eval_batch in zip(range(config.max_num_eval_steps), eval_ds):
-        eval_stats.append(_evaluate(p_eval_step, state.params, eval_batch))
+        eval_stats.append(_evaluate(p_eval_step, state.params, eval_batch))  # pytype: disable=wrong-arg-types
       eval_metrics = {}
       for k in eval_stats[0]:  # All batches of output stats are the same size
         eval_metrics[k] = np.concatenate([stat[k] for stat in eval_stats],

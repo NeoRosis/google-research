@@ -1,4 +1,4 @@
-// Copyright 2025 The Google Research Authors.
+// Copyright 2026 The Google Research Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -796,10 +796,11 @@ const antheaTemplateBase = {
             <ul>
               <li>
                 <b>Inappropriate for context</b>.
-                Translation does not adhere to appropriate or contains
-                terminology that does not fit the context. Example: "acide
-                sulfurique" is translated to "acid of sulfur" instead of
-                "sulfuric acid." This example would have a minor severity level.
+                Translation does not adhere to appropriate industry standard
+                terminology or contains terminology that does not fit the
+                context. Example: "acide sulfurique" is translated to
+                "acid of sulfur" instead of "sulfuric acid." This example would
+                have a minor severity level.
               </li>
               <li>
                 <b>Inconsistent</b>.

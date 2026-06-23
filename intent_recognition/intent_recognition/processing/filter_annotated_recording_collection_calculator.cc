@@ -1,4 +1,4 @@
-// Copyright 2025 The Google Research Authors.
+// Copyright 2026 The Google Research Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@
 #include <string_view>
 
 #include "glog/logging.h"
-#include "google/protobuf/repeated_field.h"
 #include "mediapipe/framework/calculator_framework.h"
 #include "absl/algorithm/container.h"
 #include "absl/container/flat_hash_map.h"
@@ -40,6 +39,7 @@
 #include "intent_recognition/annotated_recording_collection.pb.h"
 #include "intent_recognition/annotated_recording_collection_utils.h"
 #include "intent_recognition/processing/filter_annotated_recording_collection_calculator.pb.h"
+#include "third_party/protobuf/repeated_field.h"
 
 namespace ambient_sensing {
 namespace {
@@ -213,7 +213,7 @@ class FilterAnnotatedRecordingCollectionCalculator
 
   absl::Duration GetTraceDuration(
       const AnnotatedRecordingCollection& annotated_recording_collection) {
-    absl::optional<absl::Duration> min_timestamp, max_timestamp;
+    std::optional<absl::Duration> min_timestamp, max_timestamp;
     for (const auto& sequence :
          annotated_recording_collection.recording_collection().sequence()) {
       for (const auto& window : sequence.repeated_window().window()) {

@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -1519,7 +1519,7 @@ def parse_features(
 
   parser_builder.parse_feature(
       feature_name=parsing_feature_name,
-      feature_type=feature_type(dtype=dtype),
+      feature_type=feature_type(dtype=dtype),  # pytype: disable=missing-parameter,wrong-keyword-args
       output_name=parsed_feature_name,
       **extra_kwargs)
 

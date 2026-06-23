@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,11 +34,11 @@ import tempfile
 
 from absl.testing import absltest
 from absl.testing import parameterized
+from google.protobuf import text_format
 import numpy as np
 from rdkit import Chem
 from tensorflow.io import gfile
 
-from google.protobuf import text_format
 from smu import dataset_pb2
 from smu.geometry import utilities
 from smu.parser import smu_parser_lib

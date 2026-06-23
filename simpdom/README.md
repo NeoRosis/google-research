@@ -44,15 +44,18 @@ The python -m command assume you are in google_research/.
 
 ### 1. Download training data.
 We use SWDE dataset which is originally proposed from the paper below:
-"From One Tree to a Forest: a Unified Solution for Structured Web Data Extraction"
-Qiang Hao, Rui Cai, Yanwei Pang, and Lei Zhang
-in Proc. of the 34th International ACM SIGIR Conference on Research and Development in Information Retrieval (SIGIR 2011), pp.775-784, Beijing, China. July 24-28, 2011.
+"From One Tree to a Forest: a Unified Solution for Structured Web Data
+Extraction" Qiang Hao, Rui Cai, Yanwei Pang, and Lei Zhang
+in Proc. of the 34th International ACM SIGIR Conference on Research and
+Development in Information Retrieval (SIGIR 2011), pp.775-784, Beijing, China.
+July 24-28, 2011.
 
 Please download the SWDE dataset from its official website:
 https://archive.codeplex.com/?p=swde
 The 'sourceCode' subdirectory contains all the information needed for
 this project, we call the path to this directory /path/to/swde in the following
 instruction.
+
 * ./{vertical}: contains all the html for different websites of given verticals.
   There are 8 such verticals.
 * ./groundtruth: contains groundtruth label for all the verticals.
@@ -114,6 +117,7 @@ vocabularies/embeddings files.
 
 python -m simpdom.process_domtree_data \
 --domtree_path /path/to/swde/extracted_xpaths \
+
 --word_embedding_path <glove_dir>/glove.6B.100d.txt \
 --word_frequence_cutoff 3 --dim_word_glove 100
 
@@ -122,7 +126,7 @@ Download goldmine_data.zip from gs://gresearch/simpdom/goldmine_data.zip and
 unzip it. The data contains the annotation types for each node, e.g. date,
 address, we call such annotation 'goldmine annotations'.
 
-gsutil cp gs://gresearch/simpdom/goldmine_data.zip <your_dir>
+gcloud storage cp gs://gresearch/simpdom/goldmine_data.zip <your_dir>
 
 ### 6. Generate combined file for different seed number.
 
@@ -167,4 +171,3 @@ of the other. See example results in Fig 2 of the paper linked above. You can
 remove the "--vertical" setup if you want to visualize all the verticals.
 python -m simpdom.visualize_field_graph \
 --domtree_data_path=/path/to/swde/extracted_xpaths --vertical=auto
-

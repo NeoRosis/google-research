@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ def render_voxel_block(mlp_model, mlp_params, block_coordinates_world,
     output_alpha: A [H, W, D, 1] numpy array for the alpha values at each voxel.
   """
   num_devices = jax.device_count()
-  host_id = jax.host_id()
+  host_id = jax.process_index()
 
   chunk_size = scene_params['chunk_size']
   channels = scene_params['_channels']

@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -248,7 +248,7 @@ class MultiEnvTrainer(trainer.Trainer):
   def train(self):
     """Training loop."""
 
-    master = jax.host_id() == 0
+    master = jax.process_index() == 0
 
     train_metrics = []
     train_summary, eval_summary = None, None
@@ -326,7 +326,7 @@ class MultiEnvTrainer(trainer.Trainer):
         eval_env_ids=eval_env_ids,
         split_name='validation')
     # log eval summary
-    master = jax.host_id() == 0
+    master = jax.process_index() == 0
     if master:
       self.write_eval_summary(
           step=step, metric_dict=eval_metrics, summary=eval_summary)

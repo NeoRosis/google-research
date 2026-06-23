@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -279,8 +279,7 @@ class ConditionalLocScaleShiftBottleneck(tf.Module):
       quantized_latent = self._entropy_model.quantize(latent)
     return quantized_latent + shift, bits
 
-  def compress(self, latent, mean,
-               scale):
+  def compress(self, latent, mean, scale):
     """Compresses into a bytestring."""
     indexes = self._get_indexes(mean, scale, training=False)
     shift = self._get_shift(mean)

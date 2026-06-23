@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -120,7 +120,7 @@ class GaussianTest(absltest.TestCase):
     # The precision/range here was empirical. Going to higher does get closer
     # and closer to 1.
     xs = np.arange(.99, 3.01, .0005)
-    self.assertAlmostEqual(np.trapz(y=[dist.pdf(x) for x in xs], x=xs), 1.0)
+    self.assertAlmostEqual(np.trapezoid(y=[dist.pdf(x) for x in xs], x=xs), 1.0)
 
 
 class EmpiricalTest(absltest.TestCase):

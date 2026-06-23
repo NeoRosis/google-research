@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -218,7 +218,7 @@ class MultiEnvDomainAdverserial(multi_env_trainer.MultiEnvTrainer):
   def train(self):
     """Training loop."""
 
-    master = jax.host_id() == 0
+    master = jax.process_index() == 0
 
     eval_env_ids = list(
         map(int, self.task.dataset.data_iters.validation.keys()))

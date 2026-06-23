@@ -1,7 +1,7 @@
 # Internal Use Download Data from GCS
 
 #!/bin/bash
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 
 
 FNAME=convai2_opedata.tar.gz
-gsutil cp gs://airdialogue_share/$FNAME ./
+gcloud storage cp gs://airdialogue_share/$FNAME ./
 rm -rf cleaned_logs
 tar -xvzf $FNAME
 rm $FNAME

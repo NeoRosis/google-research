@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -637,7 +637,8 @@ def convert_note(note_event):
 
 
 def convert_ratings(
-    csv_labeled_char_span):
+    csv_labeled_char_span,
+):
   """Converts labeled spans from CSV to LabeledCharSpan object."""
   labeled_char_span = ap_parsing_lib.LabeledCharSpan(
       start_char=csv_labeled_char_span.char_start,

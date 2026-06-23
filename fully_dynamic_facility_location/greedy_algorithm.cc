@@ -1,4 +1,4 @@
-// Copyright 2025 The Google Research Authors.
+// Copyright 2026 The Google Research Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -186,7 +186,7 @@ GreedyAlgorithm::IsBlockingAtLevel(const int facility_id) {
   return std::nullopt;
 }
 
-absl::optional<std::tuple<int, double, std::vector<int>>>
+std::optional<std::tuple<int, double, std::vector<int>>>
 GreedyAlgorithm::FindBlockingCluster() {
   std::vector<int> best_blocking_cluster;
   double best_blocking_cost = std::numeric_limits<double>::max();

@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -134,7 +134,7 @@ def visualize_coord_fix(coords, acc, percentile=99.):
   """Visualize the "cell" each coordinate lives in, and highlight its edges."""
 
   # Round towards zero.
-  coords_fix = jnp.int32(jnp.fix(coords))
+  coords_fix = jnp.int32(jnp.trunc(coords))
 
   # A very hacky plus-shaped edge detector.
   coords_fix_pad = jnp.pad(coords_fix, [(1, 1), (1, 1), (0, 0)], 'edge')

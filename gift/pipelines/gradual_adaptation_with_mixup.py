@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -277,7 +277,7 @@ class GradualDomainAdaptationWithMixup(
   def train(self):
     """Training loop."""
 
-    master = jax.host_id() == 0
+    master = jax.process_index() == 0
     global_start_step = self.start_step
 
     # current_step keeps track of global (cumulative) number of steps the model

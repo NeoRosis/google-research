@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -288,7 +288,7 @@ def train_step(model, threshold, loss_op, constraint_op, optimizer,
     pred_probs = tf.sigmoid(predictions - threshold)
     pred_probs_twoclass = tf.stack([1 - pred_probs, pred_probs], axis=1)
     if FLAGS.method == 'ce':
-      loss = loss_op(one_hot_labels, pred_probs_twoclass) / FLAGS.batch_size
+      loss = loss_op(one_hot_labels, pred_probs_twoclass) / FLAGS.batch_size  # pytype: disable=missing-parameter
       constraint = constraint_op(tf.constant(0.), predictions, labels)
     else:
       loss = loss_op(threshold, predictions, labels)

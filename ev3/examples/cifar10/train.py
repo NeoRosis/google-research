@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -175,7 +175,7 @@ def get_optimizers(config):
 
 def train(config, workdir):
   """Train model."""
-  if jax.host_count() > 1:
+  if jax.process_count() > 1:
     raise ValueError(
         'CIFAR-10 example should not be run on more than 1 host (for now)'
     )

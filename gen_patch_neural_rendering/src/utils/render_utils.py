@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -129,7 +129,7 @@ def render_image(
   batch = preprocess_eval_batch(batch, num_rays)
 
   unused_rng, key_0, key_1 = jax.random.split(rng, 3)
-  host_id = jax.host_id()
+  host_id = jax.process_index()
   results = []
 
   reference_batch = data_utils.shard(batch.reference_views)

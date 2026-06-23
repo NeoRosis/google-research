@@ -1,4 +1,4 @@
-// Copyright 2025 The Google Research Authors.
+// Copyright 2026 The Google Research Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,6 +40,9 @@ string_view GfvFeatureTypeName(int gfv_feature_type) {
 StatusOr<size_t> GetGfvVectorSize(const GenericFeatureVector& gfv) {
   switch (gfv.feature_type()) {
     case GenericFeatureVector::INT64:
+      return gfv.feature_value_is_int8_compressed()
+                 ? gfv.feature_value_int8().size()
+                 : gfv.feature_value_int64_size();
     case GenericFeatureVector::BINARY:
       return gfv.feature_value_int64_size();
     case GenericFeatureVector::FLOAT:

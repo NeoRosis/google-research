@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -33,11 +33,11 @@ import os
 from typing import List, Tuple
 import unittest
 
+from google.protobuf import text_format
 import numpy as np
 import pandas as pd
 import tensorflow.compat.v1 as tf  # tf
 
-from google.protobuf import text_format
 from gigamol.molecule_graph_parsing_ops.py import molecule_graph_parsing_ops as mgpo
 from gigamol.molecule_graph_proto import molecule_graph_pb2 as mgpb
 

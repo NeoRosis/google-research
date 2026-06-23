@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,11 +36,11 @@ def _compute_spherical_harmonics(l_max, theta, phi, nonnegative_order=True):
   if nonnegative_order:
     for l in np.arange(l_max + 1):
       for m in np.arange(l + 1):
-        sph_harm[l, m, :, :] = sp_special.sph_harm(m, l, phi, theta)
+        sph_harm[l, m, :, :] = sp_special.sph_harm_y(l, m, theta, phi)
   else:
     for l in np.arange(l_max + 1):
       for m in np.arange(l + 1):
-        sph_harm[l, m, :, :] = sp_special.sph_harm(-m, l, phi, theta)
+        sph_harm[l, m, :, :] = sp_special.sph_harm_y(l, -m, theta, phi)
 
   return jnp.asarray(sph_harm)
 

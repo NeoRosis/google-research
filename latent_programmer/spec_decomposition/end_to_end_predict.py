@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -597,7 +597,7 @@ def main(_):
   hparam_str = 'hparams-' + ','.join(sorted([f'{k}={v}'
                                              for k, v in hparam_dict.items()]))
 
-  write_summary = jax.host_id() == 0
+  write_summary = jax.process_index() == 0
   tb_dir = (os.path.join(_SAVE_DIR.value, 'tb', hparam_str) if write_summary
             else '')
   summary_writer = tensorboard.SummaryWriter(tb_dir)

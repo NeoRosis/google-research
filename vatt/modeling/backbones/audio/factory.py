@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -170,7 +170,7 @@ class AudioModel(tf.keras.Model):
     if self._num_classes is None:
       return outputs
 
-    features_pooled = self._ops['dropout'](features_pooled, training)
+    features_pooled = self._ops['dropout'](features_pooled, training)  # pytype: disable=duplicate-keyword-argument
     logits = self._ops['cls'](features_pooled)
     if self.pred_aggregator is not None:
       logits = self.pred_aggregator(logits, training)

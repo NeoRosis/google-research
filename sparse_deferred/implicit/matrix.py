@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ provide `ComputeEngine` instance. We have `sparse_deferred.tf.engine` as the
 only implementation, but we also plan to add `sparse_deferred.jax.engine`.
 """
 import abc
-from typing import Any, Optional
+from typing import Any, Callable, Optional
 
 EPSILON = 1e-6  # To prevent division by 0.
 
@@ -39,6 +39,10 @@ class ComputeEngine(abc.ABC):
 
   For the most part, each function should probably be a single statament.
   """
+
+  def matmul(self, a, b):
+    """Computes matrix-matrix multiplication (`a . b`). Defaults to einsum()."""
+    return self.einsum('ij,jk->ik', a, b)
 
   @abc.abstractmethod
   def where(self, condition, val_if_true,
@@ -59,7 +63,23 @@ class ComputeEngine(abc.ABC):
 
   @abc.abstractmethod
   def abs(self, tensor):
-    """Finds element-wise absolute value."""
+    """Returns element-wise absolute value."""
+
+  @abc.abstractmethod
+  def sign(self, tensor):
+    """Finds element-wise sign()."""
+
+  @abc.abstractmethod
+  def stack(self, tensors, axis):
+    """Stack a list of tensors along new axis `axis`."""
+
+  @abc.abstractmethod
+  def gather_nd(self, tensor, indices):
+    """Like tf.gather_nd."""
+
+  @abc.abstractmethod
+  def argmax(self, tensor, axis = None):
+    """Returns indices of max values along `axis`."""
 
   @abc.abstractmethod
   def rsqrt(self, tensor):
@@ -129,6 +149,11 @@ class ComputeEngine(abc.ABC):
     """Like `tf.math.unsorted_segment_sum`."""
 
   @abc.abstractmethod
+  def unsorted_segment_max(self, data, segment_ids,
+                           num_segments):
+    """Like `tf.math.unsorted_segment_max`."""
+
+  @abc.abstractmethod
   def zeros(self, shape, dtype = 'float32'):
     """Returns tensor of all-zeros of shape `shape`."""
 
@@ -149,6 +174,10 @@ class ComputeEngine(abc.ABC):
                  keepdims = False):
     """Does logical-or (across axis) of a tensor."""
 
+  def reduce_max(self, tensor, axis = None,
+                 keepdims = False):
+    """Does logical-max (across axis) of a tensor."""
+
   @abc.abstractmethod
   def maximum(self, x, y):
     """Element-wise maximum between two tensors."""
@@ -160,6 +189,28 @@ class ComputeEngine(abc.ABC):
   @abc.abstractmethod
   def one_hot(self, tensor, num_classes):
     """Returns one-hot encoding of a tensor."""
+
+  @abc.abstractmethod
+  def random_normal(
+      self, shape, mean = 0.0, stddev = 1.0,
+      dtype = 'float32', seed = None):
+    """Tensor with `shape` where entries are drawn IID from N(mean, stddev)."""
+
+  @abc.abstractmethod
+  def matrix_rank(self, a, tol = None):
+    """Computes rank of matrix `a`."""
+
+  @abc.abstractmethod
+  def svd(self, a):
+    """Returns U, s, Vh = SVD_decomposition(`a`)."""
+
+  @abc.abstractmethod
+  def qr(self, a):
+    """Returns Q, R = QR_decomposition(`a`)."""
+
+  @abc.abstractmethod
+  def fill_padding(self, tensor, bigger_padding):
+    """Returns `tensor` with padding values."""
 
   def deferred_diag(self, vec):
     """Returns Diagonal Matrix under this `ComputeEngine`.
@@ -290,8 +341,9 @@ class SparseMatrix(Matrix):
       self, engine, *,
       indices,
       dense_shape,
-      values = None):
-    """Constructor.
+      values = None,
+      pooling_fn = None):
+    r"""Constructor.
 
     Args:
       engine: Compute engine that will be used for `gather` and
@@ -302,8 +354,16 @@ class SparseMatrix(Matrix):
         than `(max(row_ids)+1, max(col_ids)+1)`.
       values: If not set, it is assumed an all-ones vector (i.e., matrix would
         be binary). If set, it must be same length as `row_ids` (and `col_ids`).
+      pooling_fn: The pooling function. If not set, the matrix behaves as
+        expected. Specifically, the multiplication A @ W at entry (i,j) will be
+        the dot product <A_i, W_[:j]> = \sum_z A_{iz} W_{zj}. However, it can
+        be set to engine.unsorted_segment_max, such that, multiplication A @ W
+        implies a max-pooling operator, i.e., A @ W at entry (i,j) will be
+        \max_z A_{iz} W_{zj} -- in the graph sense, each node j gets the max
+        value of its neighbors (after the neighbor is scaled by A_{iz}).
     """
     self.set_engine(engine)
+    self.pooling_fn = pooling_fn or self.engine.unsorted_segment_sum
     num_rows, num_cols = dense_shape
     row_ids, col_ids = indices
     if num_rows is None:
@@ -330,8 +390,7 @@ class SparseMatrix(Matrix):
     rows_of_mat = self._engine.gather(mat, self.col_ids)
     if self.values is not None:
       rows_of_mat *= self._broadcast_and_cast(self.values, rows_of_mat)
-    return self._engine.unsorted_segment_sum(
-        rows_of_mat, self.row_ids, self.num_rows)
+    return self.pooling_fn(rows_of_mat, self.row_ids, self.num_rows)
 
   def rmatmul(self, mat):
     assert self._engine is not None, 'Compute engine is not set.'
@@ -341,11 +400,11 @@ class SparseMatrix(Matrix):
     if self.values is not None:
       rows_of_mat_t *= self._broadcast_and_cast(self.values, rows_of_mat_t)
     return self._engine.transpose(
-        self._engine.unsorted_segment_sum(
-            rows_of_mat_t, self.col_ids, self.num_cols))
+        self.pooling_fn(rows_of_mat_t, self.col_ids, self.num_cols))
 
   def _broadcast_and_cast(self, vector, tensor):
     """Broadcasts and casts `vector` to match dtype and shape of `tensor`."""
+    assert self._engine is not None, 'Compute engine is not set.'
     need_extra_dims = len(tensor.shape) - len(vector.shape)
     if need_extra_dims > 0:
       broadcast_shape = self._engine.concat(
@@ -411,6 +470,7 @@ class Product(Matrix):
     assert mats
     assert mats[0].engine
     self.set_engine(mats[0].engine)
+    assert self._engine is not None, 'Compute engine is not set.'
     for i in range(1, len(mats)):
       self._engine.assert_equal(
           mats[i - 1].shape[1], mats[i].shape[0])
@@ -439,6 +499,7 @@ class Sum(Matrix):
     assert mats
     assert mats[0].engine
     self.set_engine(mats[0].engine)
+    assert self._engine is not None, 'Compute engine is not set.'
     for i in range(1, len(mats)):
       self._engine.assert_equal(mats[i].shape[0], mats[0].shape[0])
       self._engine.assert_equal(mats[i].shape[1], mats[0].shape[1])

@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -126,7 +126,6 @@ def pinv_eval(eval_model, pretext_params, pretext_state, train_ds, test_ds):
 
   lr = LogisticRegression(penalty='l2', fit_intercept=False,
                           solver='lbfgs',
-                          multi_class='multinomial',
                           max_iter=100,
                           class_weight='balanced')
   lr.fit(features, targets)
@@ -135,7 +134,6 @@ def pinv_eval(eval_model, pretext_params, pretext_state, train_ds, test_ds):
       penalty='l2',
       fit_intercept=False,
       solver='lbfgs',
-      multi_class='multinomial',
       max_iter=100,
       class_weight='balanced')
   lr_pretext.fit(pretext_features, targets)

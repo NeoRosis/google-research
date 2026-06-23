@@ -1,4 +1,4 @@
-// Copyright 2025 The Google Research Authors.
+// Copyright 2026 The Google Research Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -276,8 +276,8 @@ SCANN_INLINE void OneToManyUint4Int8Dispatch(const int8_t* __restrict__ query,
 
 #else
 
-  fallback::OneToManyUint4Int8Impl<kHasIndices>(query, dataset_view, indices,
-                                                result, callback);
+  highway::OneToManyUint4Int8Impl<kHasIndices>(query, dataset_view, indices,
+                                               result, callback);
 #endif
 }
 

@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@ import copy
 import os
 
 from absl.testing import absltest
+from google.protobuf import text_format
 import mock
 import tensorflow.compat.v1 as tf
 
 from tensorflow.python.util.protobuf import compare
-from google.protobuf import text_format
 from readtwice.data_utils import data_utils
 from readtwice.data_utils import tokenization
 

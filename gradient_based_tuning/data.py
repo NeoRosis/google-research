@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -123,7 +123,7 @@ def get_prepacked_examples(file_pattern,
 
   # This only reads the dataset files meant for this host.
   if shard_data:
-    dataset = dataset.shard(jax.host_count(), jax.process_index())
+    dataset = dataset.shard(jax.process_count(), jax.process_index())
 
   # Up to 10 files are read in parallel.
   dataset = dataset.interleave(

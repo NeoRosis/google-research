@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -125,7 +125,7 @@ def main(argv):
   representations, _ = model([features_mat, features_mat, subgraph_mat],
                              training=False)
   representations = representations.numpy()
-  clf = LogisticRegression(solver='lbfgs', multi_class='multinomial')
+  clf = LogisticRegression(solver='lbfgs')
   clf.fit(representations[train_mask], labels[train_mask])
   clusters = clf.predict(representations[test_mask])
   print(

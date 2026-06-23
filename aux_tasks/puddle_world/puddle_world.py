@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -124,11 +124,11 @@ class SlowPuddle(Puddle):
     # Turn the intersections into a series of points.
     intersection_points = list()
     if isinstance(intersections, geometry.MultiLineString):
-      for segment in intersections:
+      for segment in intersections.geoms:
         intersection_points.extend(
             [geometry.Point(c) for c in segment.coords])
     elif isinstance(intersections, geometry.MultiPoint):
-      for point in intersections:
+      for point in intersections.geoms:
         intersection_points.append(point)
     else:
       # It's just one segment.

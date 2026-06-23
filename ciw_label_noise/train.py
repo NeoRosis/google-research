@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -145,7 +145,7 @@ def main(_):
                                      FLAGS.mixup_alpha)
       logits = model([images, True])
       if FLAGS.loss == 'ce':
-        loss = loss_op(labels, logits)
+        loss = loss_op(labels, logits)  # pytype: disable=missing-parameter
       else:
         loss = loss_op(
             labels,
@@ -168,7 +168,7 @@ def main(_):
       images, labels = batch['image'], batch['label']
       logits = model([images, False])
       if FLAGS.loss == 'ce':
-        avg_loss += loss_op(labels, logits).numpy()
+        avg_loss += loss_op(labels, logits).numpy()  # pytype: disable=missing-parameter
       else:
         loss = loss_op(
             labels,

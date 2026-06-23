@@ -1,4 +1,4 @@
-// Copyright 2025 The Google Research Authors.
+// Copyright 2026 The Google Research Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -124,6 +124,12 @@ Status AppendGfvValuesToVector(const GenericFeatureVector& gfv, VecT* result) {
 
   switch (gfv.feature_type()) {
     case GenericFeatureVector::INT64:
+      if (gfv.feature_value_is_int8_compressed()) {
+        for (const char val : gfv.feature_value_int8()) {
+          result->push_back(static_cast<T>(static_cast<int8_t>(val)));
+        }
+        return OkStatus();
+      }
       return AppendRangeToVector<T>(MakeConstSpan(gfv.feature_value_int64()),
                                     result);
 

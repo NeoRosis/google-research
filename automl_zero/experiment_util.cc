@@ -1,4 +1,4 @@
-// Copyright 2025 The Google Research Authors.
+// Copyright 2026 The Google Research Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,12 +19,12 @@
 #include <memory>
 #include <ostream>
 
-#include "google/protobuf/repeated_field.h"
 #include "absl/algorithm/container.h"
 #include "absl/container/node_hash_map.h"
 #include "absl/container/node_hash_set.h"
 #include "absl/memory/memory.h"
 #include "task.pb.h"
+#include "third_party/protobuf/repeated_field.h"
 
 namespace automl_zero {
 

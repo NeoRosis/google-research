@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -232,7 +232,7 @@ def main(argv):
         num_exp=FLAGS.num_exp,
         # Number of the head the transformer encoder
         num_heads=FLAGS.num_heads,
-        # hidden dimension of tranformer encoder
+        # hidden dimension of transformer encoder
         transformer_dim=FLAGS.transformer_dim,
         # number of layers in the transformer encoder
         transformer_num_layers=FLAGS.transformer_num_layers,

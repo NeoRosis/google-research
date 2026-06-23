@@ -1,4 +1,4 @@
-// Copyright 2025 The Google Research Authors.
+// Copyright 2026 The Google Research Authors.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,19 +17,19 @@
 #include <functional>
 #include <random>
 
+#include "gtest/gtest.h"
+#include "absl/strings/str_cat.h"
 #include "algorithm.h"
-#include "task.h"
-#include "task_util.h"
-#include "task.pb.h"
 #include "definitions.h"
 #include "executor.h"
 #include "generator.h"
 #include "generator_test_util.h"
 #include "random_generator.h"
+#include "task.h"
+#include "task.pb.h"
+#include "task_util.h"
 #include "test_util.h"
-#include "google/protobuf/text_format.h"
-#include "gtest/gtest.h"
-#include "absl/strings/str_cat.h"
+#include "third_party/protobuf/text_format.h"
 
 namespace automl_zero {
 

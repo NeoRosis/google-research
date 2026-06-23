@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -140,7 +140,7 @@ def generate_image(
     def get_color_at_sample(u, v,
                             sample_rng):
       ray = scene_camera.get_ray(u, v)
-      return compute_color_fn(ray, rng=sample_rng).array()
+      return compute_color_fn(ray, rng=sample_rng).array()  # pytype: disable=wrong-arg-types
 
     pixel_rng = jax.random.fold_in(rng, width * i + j)
     pixel_rng, i_rng, j_rng = jax.random.split(pixel_rng, num=3)

@@ -1,5 +1,5 @@
 # coding=utf-8
-# Copyright 2025 The Google Research Authors.
+# Copyright 2026 The Google Research Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -159,7 +159,7 @@ class TrainTest(absltest.TestCase):
         lambda x: x / eval_denominator,  # pylint: disable=cell-var-from-loop
         eval_metrics_sums)
 
-    if jax.host_id() == 0:
+    if jax.process_index() == 0:
       self.assertGreater(eval_summary['accuracy'], 0.1)
 
 
